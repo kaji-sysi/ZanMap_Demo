@@ -1,0 +1,412 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Gantt-Task-React styles */
+@import 'gantt-task-react/dist/index.css';
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 249, 250, 251;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  min-height: 100vh;
+}
+
+/* Gantt Chart Custom Styles */
+.gantt-container {
+  font-family: system-ui, -apple-system, sans-serif;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  user-select: none; /* テキスト選択を無効化 */
+}
+
+.gantt-container .gantt-task-list-table {
+  border-right: 1px solid #e5e7eb;
+  background-color: #ffffff;
+}
+
+.gantt-container .gantt-task-list-header {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: 600;
+}
+
+.gantt-container .gantt-task-list-row {
+  border-bottom: 1px solid #f3f4f6;
+  background-color: #ffffff;
+}
+
+.gantt-container .gantt-task-list-row:hover {
+  background-color: #f9fafb;
+}
+
+.gantt-container .gantt-task-item {
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: grab;
+}
+
+.gantt-container .gantt-task-item:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gantt-container .gantt-task-item:active {
+  cursor: grabbing;
+}
+
+/* タスクバーのリサイズハンドル */
+.gantt-container .gantt-task-handle {
+  border-radius: 2px;
+  opacity: 0.7;
+  cursor: col-resize;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.gantt-container .gantt-task-handle:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.gantt-container .gantt-task-progress {
+  border-radius: 4px;
+}
+
+
+
+.gantt-container .gantt-task-link {
+  stroke: #6b7280;
+  stroke-width: 1.5;
+  opacity: 0.7;
+}
+
+.gantt-container .gantt-today-line {
+  stroke: #ef4444;
+  stroke-width: 2;
+  opacity: 0.8;
+}
+
+.gantt-container .gantt-vertical-separator {
+  stroke: #e5e7eb;
+  stroke-width: 1;
+}
+
+.gantt-container .gantt-horizontal-separator {
+  stroke: #f3f4f6;
+  stroke-width: 1;
+}
+
+/* ガントチャートのスクロールバーのスタイリング */
+.gantt-container ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.gantt-container ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.gantt-container ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.gantt-container ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ガントチャートのツールチップ */
+.gantt-tooltip {
+  z-index: 1000 !important;
+  pointer-events: none;
+}
+
+/* ガントチャートの日ビュー対応 */
+.gantt-container[data-view-mode="day"] {
+  font-size: 11px;
+}
+
+.gantt-container[data-view-mode="day"] .gantt-task-list-table {
+  min-width: 150px;
+  max-width: 150px;
+  flex-shrink: 0;
+}
+
+.gantt-container[data-view-mode="day"] .gantt-task-list-row {
+  padding: 0 4px;
+}
+
+.gantt-container[data-view-mode="day"] .gantt-task-item {
+  min-width: 15px;
+}
+
+/* ガントチャートの週ビュー対応 */
+.gantt-container[data-view-mode="week"] .gantt-task-list-table {
+  min-width: 180px;
+  max-width: 180px;
+  flex-shrink: 0;
+}
+
+/* ガントチャートの月ビュー対応 */
+.gantt-container[data-view-mode="month"] .gantt-task-list-table {
+  min-width: 200px;
+  max-width: 200px;
+  flex-shrink: 0;
+}
+
+/* ガントチャートの横スクロール制御 */
+.gantt-container .gantt-table {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+.gantt-container .gantt-grid {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* ガントチャート全体のレイアウト制御 */
+.gantt-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.gantt-container > div {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* ガントチャートのタスクリストとチャート部分の配置 */
+.gantt-container .gantt-table-container {
+  display: flex;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.gantt-container .gantt-task-list {
+  flex-shrink: 0;
+}
+
+.gantt-container .gantt-chart {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+/* ガントチャートのレスポンシブ対応 */
+@media (max-width: 1200px) {
+  .gantt-container[data-view-mode="day"] .gantt-task-list-table {
+    min-width: 120px;
+    max-width: 120px;
+  }
+  
+  .gantt-container[data-view-mode="week"] .gantt-task-list-table {
+    min-width: 160px;
+    max-width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .gantt-container {
+    font-size: 11px;
+  }
+  
+  .gantt-container .gantt-task-list-table {
+    min-width: 140px;
+    max-width: 140px;
+  }
+  
+  .gantt-container[data-view-mode="day"] .gantt-task-list-table {
+    min-width: 100px;
+    max-width: 100px;
+  }
+  
+  .gantt-container[data-view-mode="week"] .gantt-task-list-table {
+    min-width: 120px;
+    max-width: 120px;
+  }
+  
+  .gantt-container[data-view-mode="month"] .gantt-task-list-table {
+    min-width: 140px;
+    max-width: 140px;
+  }
+}
+
+/* DnD Kit Kanban Custom Styles */
+.kanban-drag-overlay {
+  transform: rotate(5deg);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.kanban-column-over {
+  background-color: rgba(59, 130, 246, 0.05);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.kanban-task-dragging {
+  opacity: 0.6;
+  transform: scale(1.02);
+}
+
+.kanban-drag-handle {
+  touch-action: none;
+}
+
+/* FullCalendar Styles */
+.fc {
+  font-family: inherit;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  border: 1px solid #e5e7eb;
+}
+
+.fc-theme-standard td, 
+.fc-theme-standard th {
+  border-color: #e5e7eb;
+}
+
+.fc-col-header-cell {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  padding: 8px 4px;
+}
+
+.fc-daygrid-day {
+  background-color: #ffffff;
+}
+
+.fc-daygrid-day:hover {
+  background-color: #f9fafb;
+}
+
+.fc-day-today {
+  background-color: #eff6ff !important;
+}
+
+.fc-event {
+  border: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+  margin: 1px 0;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.fc-event:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.fc-event-title {
+  font-weight: 500;
+}
+
+.fc-button {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
+}
+
+.fc-button:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.fc-button:focus {
+  box-shadow: 0 0 0 2px #dbeafe;
+}
+
+.fc-button-primary {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+}
+
+.fc-button-primary:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.fc-toolbar-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.fc-more-link {
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.fc-more-link:hover {
+  color: #374151;
+}
+
+.fc-popover {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.fc-popover-header {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.fc-popover-body {
+  padding: 8px;
+}
+
+.fc-daygrid-event-harness {
+  margin: 1px 2px;
+}
+
+.fc-h-event {
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+.fc-event-main {
+  padding: 1px 2px;
+}
+
+/* Calendar responsive adjustments */
+@media (max-width: 768px) {
+  .fc-toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .fc-button {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  
+  .fc-toolbar-title {
+    font-size: 1.25rem;
+  }
+} 

@@ -1,0 +1,26 @@
+現状のJavaScriptで書かれたソースをUIはそのままでTypeScript + Next.js 14（App Router）で再作成してください。
+【技術要件】
+
+TypeScript 5.x を使用
+Next.js 14 App Routerを採用
+React 18の機能（Suspense、Server Components等）を適切に活用
+状態管理はuseStateまたはuseReducerを使用
+CSSはTailwind CSSまたはCSS Modulesを使用
+
+【型定義】
+
+すべての関数の引数と戻り値に型を定義
+インターフェースまたは型エイリアスを適切に使用
+any型の使用は避ける
+
+【コンポーネント構造】
+
+適切にコンポーネントを分割（1コンポーネント1責務）
+カスタムフックで共通ロジックを抽出
+propsの型定義を明確にする
+
+【その他の要望】
+
+エラーハンドリングを追加
+ローディング状態の実装
+レスポンシブデザイン対応（既存のUIデザインを保持しながら）
