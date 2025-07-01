@@ -26,6 +26,6 @@ export const WorkHistory = {
 export const User = {
   id: '',
   name: '',
-  role: 'worker', // 'worker' | 'admin'
+  role: 'worker', // 'worker' | 'admin　'
   rfidTag: undefined
 }; 
