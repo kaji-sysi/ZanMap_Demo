@@ -30,7 +30,7 @@ const FacilityMasterManagement: React.FC = () => {
     facility: null
   });
 
-  // データ読み込み
+  // データ読み込み 
   useEffect(() => {
     loadFacilities();
   }, []);
