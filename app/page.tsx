@@ -12,7 +12,7 @@ export default function Home() {
     setIsMounted(true);
   }, []);
 
-  // サーバーサイドレンダリング時はなにも表示しない　
+  // サーバーサイドレンダリング時はなにも表示しない
   if (!isMounted) {
     return null;
   }
