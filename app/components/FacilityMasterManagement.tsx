@@ -208,6 +208,7 @@ const FacilityMasterManagement: React.FC = () => {
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
               className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              aria-label="設備タイプでフィルタ"
             >
               <option value="all">すべてのタイプ</option>
               {facilityTypes.map(type => (
@@ -332,10 +333,13 @@ const FacilityMasterManagement: React.FC = () => {
       {/* 削除確認ダイアログ */}
       <DeleteConfirmDialog
         isOpen={deleteConfirm.isOpen}
-        onClose={() => setDeleteConfirm({ isOpen: false, facility: null })}
+        onCancel={() => setDeleteConfirm({ isOpen: false, facility: null })}
         onConfirm={handleDelete}
         itemName={deleteConfirm.facility?.name || ''}
-        itemType="設備マスタ"
+        message={deleteConfirm.facility?.name 
+          ? `設備マスタ「${deleteConfirm.facility.name}」を削除しますか？この操作は取り消せません。`
+          : '設備マスタを削除しますか？この操作は取り消せません。'
+        }
       />
     </div>
   );
