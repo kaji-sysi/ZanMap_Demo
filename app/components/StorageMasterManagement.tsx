@@ -377,14 +377,13 @@ const StorageMasterManagement: React.FC<StorageMasterManagementProps> = ({
       )}
 
       {/* 削除確認ダイアログ */}
-      {deleteTarget && (
-        <DeleteConfirmDialog
-          title="置き場の削除"
-          message={`置き場「${deleteTarget.name}」を削除しますか？この操作は取り消せません。`}
-          onConfirm={confirmDelete}
-          onCancel={() => setDeleteTarget(null)}
-        />
-      )}
+      <DeleteConfirmDialog
+        isOpen={!!deleteTarget}
+        title="置き場の削除"
+        message={deleteTarget ? `置き場「${deleteTarget.name}」を削除しますか？この操作は取り消せません。` : ''}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 };

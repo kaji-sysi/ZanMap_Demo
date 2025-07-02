@@ -22,7 +22,7 @@ export interface HistoryEntry {
 }
 
 export interface NotificationType {
-  type: 'success' | 'error';
+  type: 'success' | 'error' | 'warning';
   message: string;
 }
 

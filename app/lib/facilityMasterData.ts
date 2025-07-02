@@ -249,7 +249,8 @@ class FacilityMasterDataManager {
 
     const copied = this.addFacility({
       type: original.type,
-      name: newName || `${original.name} (コピー)`
+      name: newName || `${original.name} (コピー)`,
+      isActive: original.isActive
     });
 
     return copied;

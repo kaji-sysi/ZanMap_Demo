@@ -23,7 +23,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   currentUser,
   mode
 }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Partial<Task>>({
     title: '',
     description: '',
     projectId: 0,
@@ -70,7 +70,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
           attachments: task.attachments,
           comments: task.comments,
           createdBy: task.createdBy,
-          completedDate: task.completedDate
+          completedDate: task.completedDate ? task.completedDate : undefined
         });
       } else {
         // 新規作成時のデフォルト値
@@ -125,10 +125,10 @@ const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   const handleAddTag = () => {
-    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
+    if (newTag.trim() && !(formData.tags ?? []).includes(newTag.trim())) {
       setFormData(prev => ({
         ...prev,
-        tags: [...prev.tags, newTag.trim()]
+        tags: [...(prev.tags ?? []), newTag.trim()]
       }));
       setNewTag('');
     }
@@ -137,14 +137,14 @@ const TaskModal: React.FC<TaskModalProps> = ({
   const handleRemoveTag = (tagToRemove: string) => {
     setFormData(prev => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
+      tags: (prev.tags ?? []).filter(tag => tag !== tagToRemove)
     }));
   };
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
     
-    if (!formData.title.trim()) {
+    if (!formData.title?.trim()) {
       newErrors.title = 'タスク名は必須です';
     }
     
@@ -152,7 +152,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
       newErrors.dueDate = '期限は必須です';
     }
     
-    if (!formData.assignee.trim()) {
+    if (!formData.assignee?.trim()) {
       newErrors.assignee = '担当者は必須です';
     }
     
@@ -168,7 +168,28 @@ const TaskModal: React.FC<TaskModalProps> = ({
     e.preventDefault();
     
     if (validateForm()) {
-      onSave(formData);
+      const safeFormData: Omit<Task, 'id' | 'createdAt' | 'updatedAt'> = {
+        title: formData.title ?? '',
+        description: formData.description ?? '',
+        projectId: formData.projectId ?? 0,
+        projectName: formData.projectName ?? '',
+        assignee: formData.assignee ?? '',
+        assigneeId: formData.assigneeId ?? 0,
+        status: formData.status ?? 'todo',
+        priority: formData.priority ?? 'medium',
+        startDate: formData.startDate ?? '',
+        dueDate: formData.dueDate ?? '',
+        estimatedHours: formData.estimatedHours ?? 0,
+        actualHours: formData.actualHours ?? 0,
+        progress: formData.progress ?? 0,
+        dependencies: formData.dependencies ?? [],
+        tags: formData.tags ?? [],
+        attachments: formData.attachments ?? [],
+        comments: formData.comments ?? [],
+        createdBy: formData.createdBy ?? '',
+        completedDate: formData.completedDate
+      };
+      onSave(safeFormData);
       onClose();
     }
   };
@@ -209,6 +230,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
               type="button"
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600"
+              aria-label="閉じる"
             >
               <X className="w-6 h-6" />
             </button>
@@ -257,8 +279,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 </label>
                 <select
                   value={formData.projectId}
-                  onChange={(e) => handleChange('projectId', parseInt(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) => handleChange('projectId', Number(e.target.value))}
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
+                  aria-label="プロジェクト選択"
                 >
                   {projects.map(project => (
                     <option key={project.id} value={project.id}>
@@ -283,6 +306,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
                   className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                     errors.assignee ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  aria-label="担当者選択"
                 >
                   {assigneeOptions.map(assignee => (
                     <option key={assignee.id} value={assignee.id}>
@@ -305,7 +329,8 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 <select
                   value={formData.status}
                   onChange={(e) => handleChange('status', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
+                  aria-label="ステータス選択"
                 >
                   {statusOptions.map(status => (
                     <option key={status.value} value={status.value}>
@@ -322,7 +347,8 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 <select
                   value={formData.priority}
                   onChange={(e) => handleChange('priority', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
+                  aria-label="優先度選択"
                 >
                   {priorityOptions.map(priority => (
                     <option key={priority.value} value={priority.value}>
@@ -343,7 +369,8 @@ const TaskModal: React.FC<TaskModalProps> = ({
                   type="date"
                   value={formData.startDate}
                   onChange={(e) => handleChange('startDate', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
+                  aria-label="開始日"
                 />
               </div>
 
@@ -358,6 +385,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
                   className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                     errors.dueDate ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  aria-label="期限"
                 />
                 {errors.dueDate && (
                   <p className="mt-1 text-sm text-red-600">{errors.dueDate}</p>
@@ -377,25 +405,43 @@ const TaskModal: React.FC<TaskModalProps> = ({
                   step="0.5"
                   value={formData.estimatedHours}
                   onChange={(e) => handleChange('estimatedHours', parseFloat(e.target.value) || 0)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
+                  aria-label="予定工数"
                 />
               </div>
 
               {mode === 'edit' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    進捗（%）
+                    実績工数（時間）
                   </label>
                   <input
                     type="number"
                     min="0"
-                    max="100"
-                    value={formData.progress}
-                    onChange={(e) => handleChange('progress', parseInt(e.target.value) || 0)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    step="0.5"
+                    value={formData.actualHours}
+                    onChange={(e) => handleChange('actualHours', parseFloat(e.target.value) || 0)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
+                    aria-label="実績工数"
                   />
                 </div>
               )}
+            </div>
+
+            {/* 進捗 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                進捗（%）
+              </label>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={formData.progress}
+                onChange={(e) => handleChange('progress', parseInt(e.target.value) || 0)}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
+                aria-label="進捗率"
+              />
             </div>
 
             {/* タグ */}
@@ -404,7 +450,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 タグ
               </label>
               <div className="flex flex-wrap gap-2 mb-2">
-                {formData.tags.map(tag => (
+                {(formData.tags ?? []).map(tag => (
                   <span
                     key={tag}
                     className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800"
@@ -413,9 +459,10 @@ const TaskModal: React.FC<TaskModalProps> = ({
                     <button
                       type="button"
                       onClick={() => handleRemoveTag(tag)}
-                      className="ml-1 text-blue-600 hover:text-blue-800"
+                      className="ml-1 text-red-500 hover:text-red-700"
+                      aria-label="タグ削除"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-4 h-4" />
                     </button>
                   </span>
                 ))}
@@ -432,7 +479,8 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 <button
                   type="button"
                   onClick={handleAddTag}
-                  className="px-3 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+                  className="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  aria-label="タグ追加"
                 >
                   追加
                 </button>

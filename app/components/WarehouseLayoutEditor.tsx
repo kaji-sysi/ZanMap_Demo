@@ -1228,17 +1228,17 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
                         />
                       </div>
                       
-                      {item.description !== undefined && (
+                      {'description' in item && item.description !== undefined && (
                         <div>
                           <label className="block text-xs font-medium text-gray-700 mb-1">
                             説明
                           </label>
-                          <textarea
+                          <input
+                            type="text"
                             value={item.description || ''}
                             onChange={(e) => updateItemDescription(selectedItem, e.target.value)}
-                            className="w-full px-3 py-1 border border-gray-300 rounded-md text-sm"
+                            className="w-full px-2 py-1 border border-gray-300 rounded text-xs"
                             placeholder="説明を入力"
-                            rows={2}
                           />
                         </div>
                       )}
@@ -1253,6 +1253,7 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
                             value={Math.round(item.x)}
                             onChange={(e) => updateItemPosition(selectedItem, parseFloat(e.target.value) || 0, item.y)}
                             className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
+                            aria-label="X座標"
                           />
                         </div>
                         <div>
@@ -1264,6 +1265,7 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
                             value={Math.round(item.y)}
                             onChange={(e) => updateItemPosition(selectedItem, item.x, parseFloat(e.target.value) || 0)}
                             className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
+                            aria-label="Y座標"
                           />
                         </div>
                       </div>
@@ -1279,6 +1281,7 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
                             onChange={(e) => updateItemSize(selectedItem, parseFloat(e.target.value) || 20, item.height)}
                             className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
                             min="20"
+                            aria-label="幅"
                           />
                         </div>
                         <div>
@@ -1291,6 +1294,7 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
                             onChange={(e) => updateItemSize(selectedItem, item.width, parseFloat(e.target.value) || 20)}
                             className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
                             min="20"
+                            aria-label="高さ"
                           />
                         </div>
                       </div>
@@ -1313,14 +1317,14 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
                               <div className="flex items-center gap-2">
                                 <input
                                   type="color"
-                                  value={item.color || '#EBF8FF'}
+                                  value={'color' in item ? item.color || '#EBF8FF' : '#EBF8FF'}
                                   onChange={(e) => updateAreaColor(selectedItem, e.target.value)}
                                   className="w-8 h-8 border border-gray-300 rounded cursor-pointer"
                                   title="塗りつぶし色を選択"
                                 />
                                 <input
                                   type="text"
-                                  value={item.color || '#EBF8FF'}
+                                  value={'color' in item ? item.color || '#EBF8FF' : '#EBF8FF'}
                                   onChange={(e) => updateAreaColor(selectedItem, e.target.value)}
                                   className="flex-1 px-2 py-1 border border-gray-300 rounded-md text-xs font-mono"
                                   placeholder="#FFFFFF"
@@ -1336,15 +1340,15 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
                               <div className="flex items-center gap-2">
                                 <input
                                   type="color"
-                                  value={item.borderColor || '#3182CE'}
-                                  onChange={(e) => updateAreaColor(selectedItem, item.color, e.target.value)}
+                                  value={'borderColor' in item ? item.borderColor || '#3182CE' : '#3182CE'}
+                                  onChange={(e) => updateAreaColor(selectedItem, 'color' in item ? item.color : '#EBF8FF', e.target.value)}
                                   className="w-8 h-8 border border-gray-300 rounded cursor-pointer"
                                   title="境界線色を選択"
                                 />
                                 <input
                                   type="text"
-                                  value={item.borderColor || '#3182CE'}
-                                  onChange={(e) => updateAreaColor(selectedItem, item.color, e.target.value)}
+                                  value={'borderColor' in item ? item.borderColor || '#3182CE' : '#3182CE'}
+                                  onChange={(e) => updateAreaColor(selectedItem, 'color' in item ? item.color : '#EBF8FF', e.target.value)}
                                   className="flex-1 px-2 py-1 border border-gray-300 rounded-md text-xs font-mono"
                                   placeholder="#000000"
                                 />
@@ -1403,28 +1407,28 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
                           <div className="grid grid-cols-3 gap-2 text-xs">
                             <div>
                               <span className="text-gray-500">段数:</span>
-                              <span className="ml-1 font-medium">{item.rows}</span>
+                              <span className="ml-1 font-medium">{'rows' in item ? item.rows : '-'}</span>
                             </div>
                             <div>
                               <span className="text-gray-500">列数:</span>
-                              <span className="ml-1 font-medium">{item.columns}</span>
+                              <span className="ml-1 font-medium">{'columns' in item ? item.columns : '-'}</span>
                             </div>
                             <div>
                               <span className="text-gray-500">階層:</span>
-                              <span className="ml-1 font-medium">{item.levels}</span>
+                              <span className="ml-1 font-medium">{'levels' in item ? item.levels : '-'}</span>
                             </div>
                           </div>
                           <div className="mt-2 text-xs">
                             <div className="flex justify-between">
                               <span className="text-gray-500">タイプ:</span>
-                              <span className="font-medium">{storageMasterManager.getStorageTypeName(item.storageType)}</span>
+                              <span className="font-medium">{'storageType' in item ? storageMasterManager.getStorageTypeName(item.storageType) : '-'}</span>
                             </div>
                           </div>
                         </div>
                       )}
 
                       {/* エリアの操作ツール */}
-                      {item.type === 'area' && item.shape?.points && (
+                      {item.type === 'area' && 'shape' in item && item.shape?.points && (
                         <div className="pt-3 border-t border-gray-200">
                           <h4 className="text-xs font-medium text-gray-700 mb-3 flex items-center gap-2">
                             <Edit3 className="w-4 h-4" />
@@ -1893,7 +1897,7 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
               if (!item) return null;
               
               // 複雑な形状のエリアはリサイズ不可
-              if (item.type === 'area' && item.shape?.type !== 'rectangle') {
+              if (item.type === 'area' && 'shape' in item && item.shape?.type !== 'rectangle') {
                 return null;
               }
               

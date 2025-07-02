@@ -16,9 +16,7 @@ export const initialShelfMasterData: ShelfMaster[] = [
     columns: 3,
     levels: 1,
     shelfType: shelfTypes[0], // 標準棚
-    maxWeight: 500,
     materialTypes: ['鋼材', '金属部品'],
-    description: '標準的な材料保管用の棚',
     isActive: true,
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z'
@@ -36,9 +34,7 @@ export const initialShelfMasterData: ShelfMaster[] = [
     columns: 2,
     levels: 1,
     shelfType: shelfTypes[1], // 重量棚
-    maxWeight: 2000,
     materialTypes: ['鋼材', '木材'],
-    description: '重量物専用の棚',
     isActive: true,
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z'
@@ -56,9 +52,7 @@ export const initialShelfMasterData: ShelfMaster[] = [
     columns: 2,
     levels: 3,
     shelfType: shelfTypes[2], // 高層棚
-    maxWeight: 300,
     materialTypes: ['電子部品', '樹脂'],
-    description: '高層自動倉庫用の棚',
     isActive: true,
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z'
@@ -76,9 +70,7 @@ export const initialShelfMasterData: ShelfMaster[] = [
     columns: 6,
     levels: 1,
     shelfType: shelfTypes[3], // 小物棚
-    maxWeight: 100,
     materialTypes: ['電子部品', 'その他'],
-    description: '小物部品専用の棚',
     isActive: true,
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z'
@@ -176,8 +168,7 @@ export class ShelfMasterManager {
     return this.shelfMasters.filter(shelf =>
       shelf.name.toLowerCase().includes(term) ||
       shelf.code.toLowerCase().includes(term) ||
-      shelf.shelfType.name.toLowerCase().includes(term) ||
-      (shelf.description && shelf.description.toLowerCase().includes(term))
+      shelf.shelfType.name.toLowerCase().includes(term)
     );
   }
 

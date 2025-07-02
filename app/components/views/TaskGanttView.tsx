@@ -119,7 +119,7 @@ const TaskGanttView: React.FC<TaskGanttViewProps> = ({
     if (onTaskEdit) {
       const originalTask = tasks.find(t => t.id === parseInt(task.id));
       if (originalTask) {
-        onTaskEdit(originalTask);
+        onTaskEdit(originalTask as any);
       }
     }
   }, [tasks, onTaskEdit]);
@@ -166,6 +166,7 @@ const TaskGanttView: React.FC<TaskGanttViewProps> = ({
             value={viewMode}
             onChange={(e) => setViewMode(e.target.value as ViewMode)}
             className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label="表示モード選択"
           >
             <option value={ViewMode.Day}>日</option>
             <option value={ViewMode.Week}>週</option>
@@ -211,8 +212,6 @@ const TaskGanttView: React.FC<TaskGanttViewProps> = ({
               onDelete={handleTaskDelete}
               onSelect={handleTaskSelect}
               onDoubleClick={handleTaskDoubleClick}
-              onDragStart={handleTaskDragStart}
-              onDragEnd={handleTaskDragEnd}
               locale="ja"
               rtl={false}
               listCellWidth={
@@ -239,10 +238,8 @@ const TaskGanttView: React.FC<TaskGanttViewProps> = ({
               projectBackgroundSelectedColor="#E5E7EB"
               milestoneBackgroundColor="#F59E0B"
               milestoneBackgroundSelectedColor="#D97706"
-              gridLineColor="#F3F4F6"
               todayColor="#EF4444"
               preStepsCount={viewMode === ViewMode.Day ? 0 : viewMode === ViewMode.Week ? 1 : 2}
-              postStepsCount={viewMode === ViewMode.Day ? 0 : viewMode === ViewMode.Week ? 1 : 2}
               TooltipContent={({ task, fontSize, fontFamily }) => (
                 <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3 max-w-xs z-50">
                   <div className="font-semibold text-gray-900 mb-1">{task.name}</div>
@@ -284,7 +281,7 @@ const TaskGanttView: React.FC<TaskGanttViewProps> = ({
                         onDoubleClick={() => {
                           const originalTask = tasks.find(t => t.id === task.id);
                           if (originalTask && onTaskEdit) {
-                            onTaskEdit(originalTask);
+                            onTaskEdit(originalTask as any);
                           }
                         }}
                       >
