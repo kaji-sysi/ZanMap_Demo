@@ -1931,14 +1931,17 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
       {/* 削除確認ダイアログ */}
       <DeleteConfirmDialog
         isOpen={deleteDialog.isOpen}
-        onClose={() => setDeleteDialog({ isOpen: false, item: null, type: 'area' })}
+        onCancel={() => setDeleteDialog({ isOpen: false, item: null, type: 'area' })}
         onConfirm={() => {
           if (deleteDialog.item) {
             handleDeleteItem(deleteDialog.item.id, deleteDialog.type);
           }
         }}
         itemName={deleteDialog.item?.name || 'アイテム'}
-        itemType={deleteDialog.type}
+        message={deleteDialog.item?.name 
+          ? `${deleteDialog.type === 'area' ? 'エリア' : deleteDialog.type === 'storage' ? '置き場' : '設備'}「${deleteDialog.item.name}」を削除しますか？この操作は取り消せません。`
+          : `${deleteDialog.type === 'area' ? 'エリア' : deleteDialog.type === 'storage' ? '置き場' : '設備'}を削除しますか？この操作は取り消せません。`
+        }
       />
 
       {/* 置き場マスタ選択ダイアログ */}
@@ -1955,6 +1958,7 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
                   setShowActiveStorageOnly(true);
                 }}
                 className="p-2 hover:bg-gray-100 rounded-md"
+                aria-label="閉じる"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1982,6 +1986,7 @@ const WarehouseLayoutEditor: React.FC<WarehouseLayoutEditorProps> = ({
                     value={storageMasterSelectedType}
                     onChange={(e) => setStorageMasterSelectedType(e.target.value)}
                     className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    aria-label="置き場タイプでフィルタ"
                   >
                     <option value="all">すべてのタイプ</option>
                     {storageMasterManager.getAllStorageTypeMasters().map(type => (

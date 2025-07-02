@@ -56,43 +56,50 @@ const ShapeToolPalette: React.FC<ShapeToolPaletteProps> = ({
   // 変形操作（直接適用方式）
   const handleRotate = (degrees: number) => {
     if (!selectedArea || !onTransformArea) return;
-    
     // 直接回転を適用（累積ではなく相対変更）
     onTransformArea(selectedArea.id, {
-      type: 'rotate',
-      value: degrees
+      rotation: degrees,
+      scaleX: 1,
+      scaleY: 1,
+      flipX: false,
+      flipY: false
     });
   };
 
   const handleScale = (scaleX: number, scaleY: number) => {
     if (!selectedArea || !onTransformArea) return;
-    
     // 直接縮尺を適用（累積ではなく相対変更）
     onTransformArea(selectedArea.id, {
-      type: 'scale',
+      rotation: 0,
       scaleX,
-      scaleY
+      scaleY,
+      flipX: false,
+      flipY: false
     });
   };
 
   const handleFlip = (axis: 'x' | 'y') => {
     if (!selectedArea || !onTransformArea) return;
-    
     // 直接反転を適用
     onTransformArea(selectedArea.id, {
-      type: 'flip',
-      axis
+      rotation: 0,
+      scaleX: 1,
+      scaleY: 1,
+      flipX: axis === 'x',
+      flipY: axis === 'y'
     });
   };
 
   const resetTransform = () => {
     if (!selectedArea || !onTransformArea) return;
-    
     // 直接リセットを適用
     onTransformArea(selectedArea.id, {
-      type: 'reset'
+      rotation: 0,
+      scaleX: 1,
+      scaleY: 1,
+      flipX: false,
+      flipY: false
     });
-    
     // UI状態もリセット
     setTransform({
       rotation: 0,
@@ -102,8 +109,6 @@ const ShapeToolPalette: React.FC<ShapeToolPaletteProps> = ({
       flipY: false
     });
   };
-
-
 
   // 形状テンプレート
   const shapeTemplates: ShapeTemplate[] = [
@@ -232,6 +237,7 @@ const ShapeToolPalette: React.FC<ShapeToolPaletteProps> = ({
       category: 'complex',
       shape: {
         type: 'custom',
+        points: [],
         bezierPoints: [
           { x: 0, y: 0 },
           { x: 200, y: 0 },

@@ -1,6 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Camera, X, RotateCw, Flashlight } from 'lucide-react';
 
+declare global {
+  interface Window {
+    jsQR?: any;
+  }
+}
+
 interface QRCodeScannerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -247,18 +253,20 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({
           setError('ビデオの初期化に失敗しました。手動で開始してください。');
           setHasPermission(false);
         }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Camera access error:', err);
       let errorMessage = 'カメラへのアクセスに失敗しました。';
       
-      if (err.name === 'NotAllowedError') {
-        errorMessage = 'カメラへのアクセスが拒否されました。ブラウザの設定でカメラの権限を許可してください。';
-      } else if (err.name === 'NotFoundError') {
-        errorMessage = 'カメラが見つかりません。カメラが接続されているか確認してください。';
-      } else if (err.name === 'NotReadableError') {
-        errorMessage = 'カメラが他のアプリケーションで使用中です。';
-      } else if (typeof err.message === 'string') {
-        errorMessage = err.message;
+      if (err instanceof Error) {
+        if (err.name === 'NotAllowedError') {
+          errorMessage = 'カメラへのアクセスが拒否されました。ブラウザの設定でカメラの権限を許可してください。';
+        } else if (err.name === 'NotFoundError') {
+          errorMessage = 'カメラが見つかりません。カメラが接続されているか確認してください。';
+        } else if (err.name === 'NotReadableError') {
+          errorMessage = 'カメラが他のアプリケーションで使用中です。';
+        } else if (err.message) {
+          errorMessage = err.message;
+        }
       }
       
       setError(errorMessage);
@@ -564,6 +572,7 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({
               onClose();
             }}
             className="p-2 hover:bg-gray-100 rounded-md"
+            aria-label="閉じる"
           >
             <X className="w-5 h-5" />
           </button>

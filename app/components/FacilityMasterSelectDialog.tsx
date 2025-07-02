@@ -99,6 +99,7 @@ const FacilityMasterSelectDialog: React.FC<FacilityMasterSelectDialogProps> = ({
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-md"
+              aria-label="閉じる"
             >
               <X className="w-5 h-5" />
             </button>
@@ -127,6 +128,7 @@ const FacilityMasterSelectDialog: React.FC<FacilityMasterSelectDialogProps> = ({
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
                 className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                aria-label="設備タイプでフィルタ"
               >
                 <option value="all">すべてのタイプ</option>
                 {facilityTypes.map(type => (
@@ -193,16 +195,16 @@ const FacilityMasterSelectDialog: React.FC<FacilityMasterSelectDialogProps> = ({
                     {/* 詳細情報 */}
                     <div className="text-xs text-gray-600 space-y-1 mb-3">
                       <div className="flex justify-between">
-                        <span>サイズ:</span>
-                        <span>{facility.width} × {facility.height}px</span>
+                        <span>タイプ:</span>
+                        <span>{typeInfo?.name}</span>
                       </div>
                       <div className="flex justify-between">
                         <span>カテゴリ:</span>
-                        <span>{typeInfo?.category}</span>
+                        <span>{typeInfo?.category || '一般'}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>回転:</span>
-                        <span>{facility.rotate ? '可能' : '不可'}</span>
+                        <span>状態:</span>
+                        <span>{facility.isActive ? 'アクティブ' : '非アクティブ'}</span>
                       </div>
                     </div>
 
@@ -212,12 +214,11 @@ const FacilityMasterSelectDialog: React.FC<FacilityMasterSelectDialogProps> = ({
                         <div
                           className="border-2 border-dashed flex items-center justify-center text-xs font-medium rounded"
                           style={{
-                            width: Math.max(facility.width / 5, 25),
-                            height: Math.max(facility.height / 5, 15),
+                            width: '60px',
+                            height: '40px',
                             borderColor: typeInfo?.color || '#6B7280',
                             backgroundColor: (typeInfo?.color || '#6B7280') + '20',
-                            color: typeInfo?.color || '#6B7280',
-                            transform: facility.rotate ? 'rotate(90deg)' : 'none'
+                            color: typeInfo?.color || '#6B7280'
                           }}
                         >
                           {typeInfo?.icon}
@@ -233,9 +234,6 @@ const FacilityMasterSelectDialog: React.FC<FacilityMasterSelectDialogProps> = ({
                           : 'bg-gray-100 text-gray-800'
                       }`}>
                         {facility.isActive ? 'アクティブ' : '非アクティブ'}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        ({facility.x}, {facility.y})
                       </span>
                     </div>
                   </button>

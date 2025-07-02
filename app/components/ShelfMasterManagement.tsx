@@ -153,10 +153,10 @@ const ShelfMasterManagement: React.FC<ShelfMasterManagementProps> = ({
               <Plus className="w-4 h-4" />
               新規登録
             </button>
-            <button className="p-2 text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md">
+            <button className="p-2 text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md" aria-label="ダウンロード">
               <Download className="w-4 h-4" />
             </button>
-            <button className="p-2 text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md">
+            <button className="p-2 text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md" aria-label="アップロード">
               <Upload className="w-4 h-4" />
             </button>
           </div>
@@ -213,6 +213,7 @@ const ShelfMasterManagement: React.FC<ShelfMasterManagementProps> = ({
               value={selectedShelfType}
               onChange={(e) => setSelectedShelfType(e.target.value)}
               className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              aria-label="棚タイプでフィルタ"
             >
               <option value="all">すべてのタイプ</option>
               {getUniqueShelfTypes().map(type => (
@@ -281,11 +282,6 @@ const ShelfMasterManagement: React.FC<ShelfMasterManagementProps> = ({
                         作成: {new Date(shelf.createdAt).toLocaleDateString()} | 
                         更新: {new Date(shelf.updatedAt).toLocaleDateString()}
                       </div>
-                      {shelf.description && (
-                        <div className="mt-1 text-gray-500">
-                          {shelf.description}
-                        </div>
-                      )}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -296,6 +292,7 @@ const ShelfMasterManagement: React.FC<ShelfMasterManagementProps> = ({
                       }}
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-md"
                       title="編集"
+                      aria-label="編集"
                     >
                       <Edit className="w-4 h-4" />
                     </button>
@@ -306,6 +303,7 @@ const ShelfMasterManagement: React.FC<ShelfMasterManagementProps> = ({
                       }}
                       className="p-2 text-green-600 hover:bg-green-50 rounded-md"
                       title="コピー"
+                      aria-label="コピー"
                     >
                       <Copy className="w-4 h-4" />
                     </button>
@@ -316,6 +314,7 @@ const ShelfMasterManagement: React.FC<ShelfMasterManagementProps> = ({
                       }}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-md"
                       title="削除"
+                      aria-label="削除"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -342,9 +341,9 @@ const ShelfMasterManagement: React.FC<ShelfMasterManagementProps> = ({
       <DeleteConfirmDialog
         isOpen={!!deleteTarget}
         itemName={deleteTarget?.name || ''}
-        itemType="shelf"
         onConfirm={confirmDelete}
-        onClose={() => setDeleteTarget(null)}
+        onCancel={() => setDeleteTarget(null)}
+        message={deleteTarget?.name ? `棚「${deleteTarget.name}」を削除しますか？この操作は取り消せません。` : '棚を削除しますか？この操作は取り消せません。'}
       />
     </div>
   );

@@ -23,7 +23,6 @@ const ShelfMasterModal: React.FC<ShelfMasterModalProps> = ({
     columns: 1,
     levels: 1,
     materialTypes: [],
-    description: '',
     shelfType: shelfTypes[0]
   });
 
@@ -40,7 +39,6 @@ const ShelfMasterModal: React.FC<ShelfMasterModalProps> = ({
         columns: 1,
         levels: 1,
         materialTypes: [],
-        description: '',
         shelfType: shelfTypes[0]
       });
     }
@@ -106,7 +104,6 @@ const ShelfMasterModal: React.FC<ShelfMasterModalProps> = ({
       levels: formData.levels!,
       shelfType: formData.shelfType!,
       materialTypes: formData.materialTypes || [],
-      description: formData.description || '',
       isActive: editingShelf?.isActive ?? true,
       createdAt: editingShelf?.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -145,6 +142,7 @@ const ShelfMasterModal: React.FC<ShelfMasterModalProps> = ({
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-md"
+            aria-label="閉じる"
           >
             <X className="w-5 h-5" />
           </button>
@@ -232,6 +230,7 @@ const ShelfMasterModal: React.FC<ShelfMasterModalProps> = ({
                   className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                     errors.rows ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  aria-label="段数"
                 />
                 {errors.rows && (
                   <p className="text-red-500 text-sm mt-1">{errors.rows}</p>
@@ -251,6 +250,7 @@ const ShelfMasterModal: React.FC<ShelfMasterModalProps> = ({
                   className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                     errors.columns ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  aria-label="列数"
                 />
                 {errors.columns && (
                   <p className="text-red-500 text-sm mt-1">{errors.columns}</p>
@@ -270,6 +270,7 @@ const ShelfMasterModal: React.FC<ShelfMasterModalProps> = ({
                   className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                     errors.levels ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  aria-label="階層数"
                 />
                 {errors.levels && (
                   <p className="text-red-500 text-sm mt-1">{errors.levels}</p>
@@ -277,8 +278,6 @@ const ShelfMasterModal: React.FC<ShelfMasterModalProps> = ({
               </div>
             </div>
           </div>
-
-
 
           {/* 対応材料タイプ */}
           <div>
@@ -298,20 +297,6 @@ const ShelfMasterModal: React.FC<ShelfMasterModalProps> = ({
                 </label>
               ))}
             </div>
-          </div>
-
-          {/* 説明 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              説明
-            </label>
-            <textarea
-              value={formData.description || ''}
-              onChange={(e) => handleInputChange('description', e.target.value)}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="棚の説明を入力"
-            />
           </div>
         </div>
 
