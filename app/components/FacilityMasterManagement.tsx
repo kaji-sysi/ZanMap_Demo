@@ -331,16 +331,16 @@ const FacilityMasterManagement: React.FC = () => {
       />
 
     {/* 削除確認ダイアログ */}
-    <DeleteConfirmDialog
-      isOpen={deleteConfirm.isOpen}
-      onCancel={() => setDeleteConfirm({ isOpen: false, facility: null })}
-      onConfirm={handleDelete}
-      itemName={deleteConfirm.facility?.name || ''}
-      message={deleteConfirm.facility?.name 
-        ? `設備マスタ「${deleteConfirm.facility.name}」を削除しますか？この操作は取り消せません。`
-        : '設備マスタを削除しますか？この操作は取り消せません。'
-      }
-    />
+<DeleteConfirmDialog
+  isOpen={deleteConfirm.isOpen}
+  onCancel={() => setDeleteConfirm({ isOpen: false, facility: null })}
+  onConfirm={handleDelete}
+  itemName={deleteConfirm.facility?.name || ''}
+  message={deleteConfirm.facility?.name 
+    ? `設備マスタ「${deleteConfirm.facility.name}」を削除しますか？この操作は取り消せません。`
+    : '設備マスタを削除しますか？この操作は取り消せません。'
+  }
+/>
     </div>
   );
 };
